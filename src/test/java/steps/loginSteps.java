@@ -9,11 +9,12 @@ package steps;
 
 import org.easetech.easytest.annotation.DataLoader;
 import org.easetech.easytest.annotation.Param;
-import org.easetech.easytest.loader.LoaderType;
 import org.easetech.easytest.runner.DataDrivenTestRunner;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
@@ -22,11 +23,18 @@ import pages.LoginPage;
 import utils.Web;
 
 @RunWith(DataDrivenTestRunner.class)
-@DataLoader(filePaths = {"massadedados//massadedados.xls"}, loaderType=LoaderType.EXCEL)
+// Carregando dados armazenados em .xls
+// @DataLoader(filePaths = {"massadedados//massadedados.xls"}, loaderType=LoaderType.EXCEL)
+
+// Carregando dados armazenados em .csv
+@DataLoader(filePaths = {"massadedados//massadedados.csv"})
 public class loginSteps {
 	private WebDriver navegador;
 	private LoginPage loginPage;
 	private HomePage homePage;
+	
+	@Rule
+	public TestName nomeTest = new TestName();
 	
 	/**
 	 * Método responsável por fazer o setup da execução dos testes e iniciar a instância das pages
@@ -61,5 +69,6 @@ public class loginSteps {
 		
 		loginPage.realizarLogin(email, senha);
 		homePage.validarLoginComSucesso(msgLoginComSucesso);
+		homePage.tirarEvidencia(nomeTest);
 	}
 }
